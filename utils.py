@@ -1,4 +1,5 @@
 import os
+from config import TRACKING_FILE_NAME
 
 def file_exists(file_path):
     return os.path.isfile(file_path)
@@ -29,3 +30,18 @@ def delete_file(file_path):
     
 def clear():
     os.system('cls') if os.name == 'nt' else os.system('clear')
+
+def update_tracking_file(folder_path: str, youtube_urls: list[str]) -> bool:
+    try:
+        tracking_file_path = os.path.join(folder_path, TRACKING_FILE_NAME)
+        
+        with open(tracking_file_path, 'w', encoding='utf-8') as f:
+            for url in youtube_urls:
+                f.write(f"{url}\n")
+        
+        print(f"Updated tracking file with {len(youtube_urls)} URLs")
+        return True
+        
+    except Exception as e:
+        print(f"Error updating tracking file: {e}")
+        return False

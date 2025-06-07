@@ -14,3 +14,6 @@ PLAYLIST_FILE_NAME = ".playlist"
 TRACKING_FILE_NAME = "tracking"
 
 YOUTUBE_PLAYLIST_URL_PREFIX = ["https://youtube.com/playlist?list=", "https://www.youtube.com/playlist?list="]
+
+# APP DATA
+VERSION = "1.0.0"
