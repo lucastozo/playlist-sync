@@ -2,10 +2,10 @@ import os
 from pathlib import Path
 from utils import clear, file_exists, update_tracking_file
 from ytdlp import extract_videos_from_playlist, download_video, get_video_title
-from config import VERSION, YOUTUBE_PLAYLIST_URL_PREFIX, OUTPUT_FOLDER_PATH, PLAYLIST_TRACKING, CHANGE_MODIFIED_DATE, TRACKING_FILE_NAME
+from config import APP_NAME, VERSION, YOUTUBE_PLAYLIST_URL_PREFIX, OUTPUT_FOLDER_PATH, PLAYLIST_TRACKING, CHANGE_MODIFIED_DATE, TRACKING_FILE_NAME
 from help import *
 
-print(f"yt-dlp-quick-tool - v{VERSION}")
+print(f"{APP_NAME} - v{VERSION}")
 print("Repository: github.com/lucastozo/yt-dlp-quick-tool")
 
 while True:
