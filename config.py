@@ -11,7 +11,7 @@ VIDEO_PARAMS = "-f bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best"
 ADDITIONAL_PARAMS = "" # Additional yt-dlp options you may want to use
 
 # APP INFO AND SETTINGS, DO NOT CHANGE VALUES BELOW
-APP_NAME = "yt-dlp-quick-tool"
+APP_NAME = "playlist-sync"
 VERSION = "1.0.0"
 PLAYLIST_FILE_NAME = ".playlist"
 TRACKING_FILE_NAME = "tracking"
