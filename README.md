@@ -1,4 +1,4 @@
-# yt-dlp-quick-tool
+# playlist-sync
 
 A Python wrapper around yt-dlp that makes downloading videos and playlists easier, with some extra features for playlist management.
 
