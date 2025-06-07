@@ -1,54 +1,87 @@
 # yt-dlp-quick-tool
 
-lightweight Python tool that streamlines the use of [yt-dlp](https://github.com/yt-dlp/yt-dlp) for downloading YouTube videos and playlists. It offers a simple interactive interface and automates common tasks like playlist syncing, audio extraction, and download tracking.
+A Python wrapper around yt-dlp that makes downloading videos and playlists easier, with some extra features for playlist management.
 
----
+## Why This Exists
 
-## Purpose
+I cancelled my YouTube Premium subscription and lost access to offline downloads in YouTube Music. I had playlists with hundreds of songs that I wanted to keep locally, but I also wanted them to stay in sync - when I remove a song from my playlist because I'm tired of it, I want it gone from my local folder too. When I discover new music and add it to the playlist, I want it downloaded automatically.
 
-This tool was made for users who want a quick and straightforward way to:
+Basically, I wanted my local music folder to behave like YouTube Music's offline downloads used to, but without paying for Premium.
 
-- Download individual YouTube videos or full playlists
-- Keep a local folder in sync with a YouTube playlist
+So I built this tool around yt-dlp to handle that workflow. Then I figured other people might have the same problem, so here it is.
 
----
+## What It Does
 
-## Features
+- Downloads single videos or entire playlists
+- Converts to audio (MP3) or keeps as video
+- Tracks what you've downloaded to avoid duplicates
+- **Playlist sync**: Keeps your local folder in sync with a YouTube playlist - downloads new videos, deletes removed ones
 
-- Download single videos or entire playlists
-- Sync a local folder with a YouTube playlist (add missing, delete removed)
+The playlist sync is the main feature that makes this different from just using yt-dlp directly. It's designed for music collections where you actively curate playlists and want your local copies to match.
 
----
+## Installation & Setup
 
-## Requirements
+You need yt-dlp installed first:
+```bash
+pip install yt-dlp
+```
 
-- Python 3.9+
-- [yt-dlp](https://github.com/yt-dlp/yt-dlp) installed and available in your system's PATH
-- [FFmpeg](https://ffmpeg.org/download.html) (required for audio extraction, format conversion, and thumbnail embedding)
-
----
-
-## Configuration (via `config.py`)
-
-You can edit the behavior of the tool by modifying `config.py`. Below is a breakdown of all the settings:
-
-| Setting                    | Description                                                                                      | Default Value                                                                 |
-|----------------------------|--------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------|
-| `OUTPUT_FOLDER_PATH`       | Folder where downloaded files will be saved                                                     | `"Downloads"`                                                                  |
-| `COOKIES_FILE_PATH`        | Path to cookies file for handling restricted/private videos                                     | `""` (empty string, cookies not used)                                          |
-| `EMBED_THUMBNAIL`          | If `True`, embeds the video thumbnail                                                           | `False`                                                                        |
-| `PLAYLIST_TRACKING`        | If `True`, stores downloaded playlist URLs to skip duplicates                                   | `False`                                                                        |
-| `CHANGE_MODIFIED_DATE`     | If `True`, aligns the file's modified time to its creation time                                 | `False`                                                                        |
-| `SILENT_MODE`              | If `True`, hides all yt-dlp output in the terminal                                              | `False`                                                                        |
-| `AUDIO_PARAMS`             | yt-dlp flags used for audio downloads                                                           | `"-f bestaudio -x --audio-format mp3 --audio-quality 320k"`                   |
-| `VIDEO_PARAMS`             | yt-dlp flags used for video downloads                                                           | `"-f bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best"`               |
-| `ADDITIONAL_PARAMS`        | Extra global yt-dlp flags you may want to add (e.g., proxy, geo-bypass)                         | `""` (empty string, no extras)                                                 |
-
----
-
-## Installation
-
+Then just clone this repo and run it:
 ```bash
 git clone https://github.com/lucastozo/yt-dlp-quick-tool
 cd yt-dlp-quick-tool
 python main.py
+```
+
+## Configuration
+
+Edit `config.py` to change:
+- Download folder
+- Audio/video quality settings  
+- Whether to embed thumbnails
+- Cookie file path (if you need to access private playlists)
+
+## Usage
+
+Run `python main.py` and follow the prompts. It's pretty straightforward:
+
+1. Choose single video or playlist
+2. Choose audio or video format
+3. Enter URL(s)
+4. Wait for downloads
+
+For playlist syncing, use the "sync_playlist" option. **Warning**: This will delete local files that aren't in the playlist anymore. That's intentional for music curation, but make sure you understand what it's doing.
+
+## Features
+
+- **Playlist tracking**: Avoids re-downloading videos you already have
+- **Playlist sync**: Keeps local folder matched with YouTube playlist (adds new, removes old)
+- **Audio extraction**: Downloads as MP3 with configurable quality
+- **Thumbnail embedding**: Optional thumbnail embedding in audio files
+- **Date matching**: Can set file modified date to match creation date
+
+## Limitations & Warnings
+
+- The playlist sync feature **deletes files**. It's designed for music where you want your local collection to match your current playlist exactly
+- File matching for deletion is based on video title, which isn't perfect
+- This was built for my personal workflow, so some design decisions might seem weird if you have different needs
+- Error handling could be better
+- The UI is pretty basic (it's a terminal script)
+
+## Is This For You?
+
+This tool is great if you:
+- Want to replace YouTube Music offline downloads
+- Actively curate playlists and want local copies to stay in sync
+- Don't mind a simple terminal interface
+- Are comfortable with the sync feature potentially deleting files
+
+It might not be for you if you:
+- Just want to download videos occasionally (use yt-dlp directly)
+- Want a GUI
+- Need fine-grained control over what gets deleted
+- Are worried about the sync feature being too aggressive
+
+## Contributing
+
+Feel free to open issues or PRs. This started as a personal tool so there's definitely room for improvement, especially around error handling and user experience.
