@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 from utils import clear, file_exists, update_tracking_file
 from ytdlp import extract_videos_from_playlist, download_video, get_video_title
-from config import APP_NAME, VERSION, YOUTUBE_PLAYLIST_URL_PREFIX, OUTPUT_FOLDER_PATH, PLAYLIST_TRACKING, CHANGE_MODIFIED_DATE, TRACKING_FILE_NAME
+from config import APP_NAME, VERSION, YOUTUBE_PLAYLIST_URL_PREFIX, OUTPUT_FOLDER_PATH, PLAYLIST_TRACKING, CHANGE_TRACK_NUMBER, TRACKING_FILE_NAME
 from help import *
 
 print(f"{APP_NAME} - v{VERSION}")
@@ -161,8 +161,30 @@ else:
             with open(f"{OUTPUT_FOLDER_PATH}/{TRACKING_FILE_NAME}", 'a') as f:
                 f.write(f"{url}")
 
-if CHANGE_MODIFIED_DATE:
+if CHANGE_TRACK_NUMBER:
+    from mutagen.mp3 import MP3
+    from mutagen.id3 import ID3
+    from mutagen.id3._frames import TRCK
+
+    mp3_files = [f for f in Path(OUTPUT_FOLDER_PATH).iterdir() 
+             if f.is_file() and f.suffix.lower() == '.mp3' and f.name != TRACKING_FILE_NAME]
+
+    i = len(mp3_files)
+
     for file in Path(OUTPUT_FOLDER_PATH).iterdir():
         if file.is_file():
-            created_time = file.stat().st_ctime
-            os.utime(file, (created_time, created_time))
+            if file.name == TRACKING_FILE_NAME or file.suffix.lower() != '.mp3':
+                print(f"Skipping file: {file.name}")
+                continue
+            
+            audio_file = MP3(file, ID3=ID3)
+
+            if audio_file.tags is None:
+                audio_file.add_tags()
+
+            if audio_file.tags is not None:
+                track_number = i
+                i -= 1
+                audio_file.tags['TRCK'] = TRCK(encoding=3, text=str(track_number))
+                audio_file.save()
+                print(f"Changed track number for {file.name} to {track_number}")
