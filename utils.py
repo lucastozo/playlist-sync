@@ -1,5 +1,5 @@
 import os
-from config import TRACKING_FILE_NAME
+from config import TRACKING_FILE_NAME, OUTPUT_FOLDER_PATH, CHANGE_MODIFIED_DATE
 
 def file_exists(file_path):
     return os.path.isfile(file_path)
@@ -45,3 +45,16 @@ def update_tracking_file(folder_path: str, youtube_urls: list[str]) -> bool:
     except Exception as e:
         print(f"Error updating tracking file: {e}")
         return False
+    
+def change_modified_date_folder(folder_path: str = OUTPUT_FOLDER_PATH):
+    if not CHANGE_MODIFIED_DATE:
+        print("CHANGE_MODIFIED_DATE is disabled, skipping...")
+        return
+    
+    print(f"Changing modified date for all files...")
+    
+    from pathlib import Path
+    for file in Path(folder_path).iterdir():
+        if file.is_file():
+            created_time = file.stat().st_ctime
+            os.utime(file, (created_time, created_time))

@@ -12,8 +12,8 @@ ADDITIONAL_PARAMS = "" # Additional yt-dlp options you may want to use
 
 # APP INFO AND SETTINGS, DO NOT CHANGE VALUES BELOW
 APP_NAME = "playlist-sync"
-VERSION = "1.0.0"
+VERSION = "1.0.1"
 PLAYLIST_FILE_NAME = ".playlist"
-TRACKING_FILE_NAME = "tracking"
+TRACKING_FILE_NAME = ".tracking"
 
 YOUTUBE_PLAYLIST_URL_PREFIX = ["https://youtube.com/playlist?list=", "https://www.youtube.com/playlist?list="]

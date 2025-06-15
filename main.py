@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from utils import clear, file_exists, update_tracking_file
+from utils import clear, file_exists, update_tracking_file, change_modified_date_folder
 from ytdlp import extract_videos_from_playlist, download_video, get_video_title
 from config import APP_NAME, VERSION, YOUTUBE_PLAYLIST_URL_PREFIX, OUTPUT_FOLDER_PATH, PLAYLIST_TRACKING, CHANGE_MODIFIED_DATE, TRACKING_FILE_NAME
 from help import *
@@ -108,6 +108,9 @@ while True:
                 print("ERROR: Failed to update tracking file")
                 continue
 
+            if CHANGE_MODIFIED_DATE:
+                change_modified_date_folder(folder_path)
+
             print("Sync completed successfully")
 
 
@@ -162,7 +165,4 @@ else:
                 f.write(f"{url}")
 
 if CHANGE_MODIFIED_DATE:
-    for file in Path(OUTPUT_FOLDER_PATH).iterdir():
-        if file.is_file():
-            created_time = file.stat().st_ctime
-            os.utime(file, (created_time, created_time))
+    change_modified_date_folder(OUTPUT_FOLDER_PATH)
